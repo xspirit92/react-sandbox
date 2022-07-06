@@ -1,0 +1,10 @@
+[
+    {"input":{"r":0,"g":0,"b":0},"output":{"Black":1}},
+    {"input":{"r":255,"g":0,"b":0},"output":{"Red":1}},
+    {"input":{"r":255,"g":255,"b":0},"output":{"Yellow":1}},
+    {"input":{"r":0,"g":255,"b":0},"output":{"Lime":1}},
+    {"input":{"r":0,"g":255,"b":255},"output":{"Aqua":1}},
+    {"input":{"r":0,"g":0,"b":255},"output":{"Blue":1}},
+    {"input":{"r":255,"g":0,"b":255},"output":{"Magenta":1}},
+    {"input":{"r":255,"g":255,"b":255},"output":{"White":1}}
+]

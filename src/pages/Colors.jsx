@@ -1,25 +1,57 @@
-import { Space, Divider, Form } from "antd";
+import { Space, Divider, Form, Typography } from "antd";
 import { Colorpicker } from "antd-colorpicker";
 import React, { useEffect, useState } from "react";
+import { NeuralNetwork } from 'brain.js'
+import * as data from '../color-test.json'
 
+const { Title } = Typography;
 
 const Colors = () => {
     const [rgb, setRgb] = useState()
+    const [net, setNet] = useState()
+    const [array, setArray] = useState([])
     
     const colorChanged = (value) => {
-        setRgb(value?.rgb)
+        const color = {
+            r: value?.rgb.r,
+            g: value?.rgb.g,
+            b: value?.rgb.b
+        }
+        setRgb(color)
+        
+        const resultNN = net.run(color)
+
+        let sortable = [];
+        for (let item in resultNN) {
+            sortable.push({
+                color: item,
+                value: (resultNN[item] * 100).toFixed(2) + '%'
+            })
+        }
+        sortable.sort(function(a, b) {
+            return a.value < b.value ? 1 : -1
+        });
+
+        setArray(sortable)
     }
 
-    // useEffect(() => {
-    //     var net = new brain.NeuralNetwork();
+    const getRGB = (colorName) => {
+        const color = Array.from(data).find((item) => item.output[colorName])?.input
+        return `rgb(${color.r},${color.g},${color.b})`
+    }
+    const getRGBValue = (colorName) => {
+        const color = Array.from(data).find((item) => item.output[colorName])?.input
+        return `[${color.r},${color.g},${color.b}]`
+    }
 
-    //     net.train([{input: { r: 0.03, g: 0.7, b: 0.5 }, output: { black: 1 }},
-    //             {input: { r: 0.16, g: 0.09, b: 0.2 }, output: { white: 1 }},
-    //             {input: { r: 0.5, g: 0.5, b: 1.0 }, output: { white: 1 }}]);
+    useEffect(() => {
+        const net = new NeuralNetwork()
+        const testData = data
 
-    //     var output = net.run({ r: 1, g: 0.4, b: 0 });
-    //     console.log(output);
-    // })
+        net.train(testData)
+        
+        setNet(net)
+    }, [])
 
     return (
         <Space direction="vertical">
@@ -39,6 +71,18 @@ const Colors = () => {
                 </Space>
             </Space>
             <Divider></Divider>
+            <Title level={5}> Результаты</Title>
+            {array?.map((item) => (
+                <div key={item.color} style={{display: 'flex', alignItems: 'center'}}>
+                    <div style={{
+                        height: 20,
+                        width: 50,
+                        backgroundColor: getRGB(item.color),
+                        margin: 10
+                    }}></div>
+                    {item.color} {item.value}
+                </div>
+            ))}
         </Space>
     )
 }
