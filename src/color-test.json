@@ -1,10 +1,162 @@
 [
-    {"input":{"r":0,"g":0,"b":0},"output":{"Black":1}},
-    {"input":{"r":255,"g":0,"b":0},"output":{"Red":1}},
-    {"input":{"r":255,"g":255,"b":0},"output":{"Yellow":1}},
-    {"input":{"r":0,"g":255,"b":0},"output":{"Lime":1}},
-    {"input":{"r":0,"g":255,"b":255},"output":{"Aqua":1}},
-    {"input":{"r":0,"g":0,"b":255},"output":{"Blue":1}},
-    {"input":{"r":255,"g":0,"b":255},"output":{"Magenta":1}},
-    {"input":{"r":255,"g":255,"b":255},"output":{"White":1}}
+    {
+        "input": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+        },
+        "output": {
+            "Black": 1
+        }
+    },
+    {
+        "input": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+        },
+        "output": {
+            "White": 1
+        }
+    },
+    {
+        "input": {
+            "r": 1,
+            "g": 0,
+            "b": 0
+        },
+        "output": {
+            "Red": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 1,
+            "b": 0
+        },
+        "output": {
+            "Lime": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 0,
+            "b": 1
+        },
+        "output": {
+            "Blue": 1
+        }
+    },
+    {
+        "input": {
+            "r": 1,
+            "g": 1,
+            "b": 0
+        },
+        "output": {
+            "Yellow": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 1,
+            "b": 1
+        },
+        "output": {
+            "Aqua": 1
+        }
+    },
+    {
+        "input": {
+            "r": 1,
+            "g": 0,
+            "b": 1
+        },
+        "output": {
+            "Magenta": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0.75,
+            "g": 0.75,
+            "b": 0.75
+        },
+        "output": {
+            "Silver": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0.5,
+            "g": 0.5,
+            "b": 0.5
+        },
+        "output": {
+            "Gray": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0.5,
+            "g": 0,
+            "b": 0
+        },
+        "output": {
+            "Maroon": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0.5,
+            "g": 0.5,
+            "b": 0
+        },
+        "output": {
+            "Olive": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 0.5,
+            "b": 0
+        },
+        "output": {
+            "Green": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0.5,
+            "g": 0,
+            "b": 0.5
+        },
+        "output": {
+            "Purple": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 0.5,
+            "b": 0.5
+        },
+        "output": {
+            "Teal": 1
+        }
+    },
+    {
+        "input": {
+            "r": 0,
+            "g": 0,
+            "b": 0.5
+        },
+        "output": {
+            "Navy": 1
+        }
+    }
 ]
