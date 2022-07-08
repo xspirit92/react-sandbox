@@ -3,6 +3,7 @@ import { Colorpicker } from "antd-colorpicker";
 import React, { useEffect, useState } from "react";
 import { NeuralNetwork } from 'brain.js'
 import * as data from '../color-test.json'
+import ColorsChart from "../widgets/colors/ColorsChart";
 
 const { Title } = Typography;
 
@@ -25,8 +26,7 @@ const Colors = () => {
         for (let item in resultNN) {
             sortable.push({
                 color: item,
-                valueNum: Math.round(resultNN[item] * 100 ) / 100,
-                value: (resultNN[item] * 100).toFixed(2) + '%'
+                valueNum: Math.round(resultNN[item] * 100 ) / 100
             })
         }
         sortable.sort(function(a, b) {
@@ -35,12 +35,6 @@ const Colors = () => {
 
         setArray(sortable)
     }
-
-    const getRGB = (colorName) => {
-        const color = Array.from(data).find((item) => item.output[colorName])?.input
-        return `rgb(${color.r*255},${color.g*255},${color.b*255})`
-    }
-
     useEffect(() => {
         const net = new NeuralNetwork()
 
@@ -50,7 +44,7 @@ const Colors = () => {
     }, [])
 
     return (
-        <Space direction="vertical">
+        <Space direction="vertical" style={{width: '100%', gap: 0}}>
         <Title level={4}>Выберите цвет</Title>
             <Space>
                 <Form>
@@ -63,18 +57,12 @@ const Colors = () => {
                 </Form>
             </Space>
             <Divider></Divider>
-            <Title level={5}>Результаты нейронной сети</Title>
-                {array?.map((item) =>
-                    <div key={item.color} style={{display: 'flex', alignItems: 'center'}}>
-                        <div style={{
-                            height: 20,
-                            width: 50,
-                            backgroundColor: getRGB(item.color),
-                            margin: 10
-                        }}></div>
-                        {item.color} {item.value}
-                    </div>
-                )}
+            {array.length
+                ? <Space style={{width: '100%'}} direction="vertical">
+                    <Title level={5}>Результаты нейронной сети</Title>
+                    <ColorsChart data={array}></ColorsChart>
+                  </Space>
+                : <></>}
         </Space>
     )
 }
