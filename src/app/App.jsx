@@ -7,7 +7,7 @@ import {
   RiseOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CommentsFeed from '../pages/CommentsFeed'
 import Game from '../pages/Game'
 import { Route, Link, Routes, useLocation } from "react-router-dom";
