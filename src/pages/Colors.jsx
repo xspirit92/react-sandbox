@@ -44,7 +44,7 @@ const Colors = () => {
     }, [])
 
     return (
-        <Space direction="vertical" style={{width: '100%', gap: 0}}>
+        <Space direction="vertical" style={{width: '100%'}}>
         <Title level={4}>Выберите цвет</Title>
             <Space>
                 <Form>

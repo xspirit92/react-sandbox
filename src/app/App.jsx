@@ -3,7 +3,8 @@ import {
   MenuUnfoldOutlined,
   CommentOutlined,
   RobotOutlined,
-  FormatPainterOutlined
+  FormatPainterOutlined,
+  RiseOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useState, useEffect } from 'react';
@@ -13,6 +14,7 @@ import { Route, Link, Routes, useLocation } from "react-router-dom";
 import 'antd/dist/antd.min.css'
 import '../styles.css';
 import Colors from '../pages/Colors';
+import Snake from '../pages/Snake';
 
 const { Header, Sider, Content } = Layout;
 
@@ -45,6 +47,11 @@ const App = () => {
                 <span>Colors</span>
                 <Link to="/colors" />
             </Menu.Item>
+            <Menu.Item key="/snake">
+              <RiseOutlined />
+                <span>Snake</span>
+                <Link to="/snake" />
+            </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -71,6 +78,7 @@ const App = () => {
             <Route path="/" element={<CommentsFeed />}></Route>
             <Route path="/game" element={<Game/>}></Route>
             <Route path="/colors" element={<Colors/>}></Route>
+            <Route path="/snake" element={<Snake/>}></Route>
           </Routes>
         </Content>
       </Layout>
