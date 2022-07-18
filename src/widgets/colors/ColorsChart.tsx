@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Column } from '@ant-design/plots'
 
-const ColorsChart = (props) => {
-    const config = {
+const ColorsChart = (props: {data: any}) => {
+    const config: any = {
         data: props.data,
         xField: 'color',
         yField: 'valueNum',
@@ -20,7 +20,7 @@ const ColorsChart = (props) => {
             },
         },
         backgroundColor: '#000',
-        color: item => item.color,
+        color: (item: any) => item.color,
         meta: {
             color: {
                 alias: '类别',

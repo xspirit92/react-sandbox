@@ -8,7 +8,7 @@ import ColorsChart from "../widgets/colors/ColorsChart";
 const { Title } = Typography;
 
 const Colors = () => {
-    const [rgb, setRgb] = useState()
+    const [_, setRgb] = useState()
     const [net, setNet] = useState()
     const [array, setArray] = useState([])
     

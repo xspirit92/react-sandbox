@@ -2,7 +2,7 @@ import { Space, Typography } from 'antd'
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react'
 import { Stage, Layer, Rect } from 'react-konva'
-import { $cellStore, $foodStore, $snakeStore, FIELD_SIZE, startGameFx, stopGame } from '../entities/Snake';
+import { $cellStore, FIELD_SIZE, startGameFx, stopGame } from '../entities/Snake';
 import SnakeRect from '../widgets/snake/SnakeRect';
 
 const { Title } = Typography;

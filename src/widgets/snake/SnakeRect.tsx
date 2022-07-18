@@ -1,11 +1,12 @@
 import React from 'react'
 import { Rect } from 'react-konva'
+import { Cell } from '../../entities/models/Snake'
 import { CELL_SIZE } from '../../entities/Snake'
 
-const SnakeRect = (props) => {
+const SnakeRect = (props: any) => {
 
     return (
-        props.cells.reverse().map(item =>
+        props.cells?.reverse().map((item: Cell) =>
             <Rect
                 key={item.key}
                 x={CELL_SIZE * item.x}

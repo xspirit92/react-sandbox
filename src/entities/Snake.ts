@@ -1,64 +1,28 @@
 import { createEffect, createEvent, createStore, forward, sample } from "effector"
+import { Cell, CellTypeEnum, DirectionEnum, Snake } from "./models/Snake"
 
 export const FIELD_SIZE = 600
 export const CELL_SIZE = 20
-const TICK = 200
+const TICK = 100
 
-const CellTypeEnum = {
-    Snake: 'green',
-    Head: 'lime',
-    Food: 'red'
-}
-
-const DirectionEnum = {
-    Left: 37,
-    Up: 38,
-    Right: 39,
-    Down: 40,
-}
-
-const defaultSnake = {
-    cells: [
-        {
-            key: 1,
-            x: 2,
-            y: 0,
-            type: CellTypeEnum.Head
-        },
-        {
-            key: 2,
-            x: 1,
-            y: 0,
-            type: CellTypeEnum.Snake
-        },
-        {
-            key: 3,
-            x: 0,
-            y: 0,
-            type: CellTypeEnum.Snake
-        }
-    ],
-    direction: DirectionEnum.Right,
-    directionBuffer: []
-}
 
 const tick = createEvent()
 export const stopGame = createEvent()
-const keyPressed = createEvent()
+const keyPressed = createEvent<KeyboardEvent>()
 
 
-const $timerStore = createStore(null)
+const $timerStore = createStore<number>(0)
     .on(
         stopGame,
-        timerId => {
+        (timerId: number) => {
             clearInterval(timerId)
             window.removeEventListener("keydown", keyPressed);
         }
     )
-const $snakeStore = createStore(null)
+const $snakeStore = createStore<Snake | null>(null)
     .reset(stopGame)
-export const $cellStore = $snakeStore.map(snake => {
-    let cells = []
+export const $cellStore = $snakeStore.map((snake: Snake | null) => {
+    let cells: Cell[] = []
     if (snake) {
         cells = snake.cells
         cells = [...cells, snake.food]
@@ -69,29 +33,29 @@ export const $cellStore = $snakeStore.map(snake => {
 
 export const startGameFx = createEffect(() => {
     window.addEventListener("keydown", keyPressed)
-    const timerId = setInterval(() => {
+    const timerId = window.setInterval(() => {
         tick()
     }, TICK)
 
     return timerId
 })
-const keyPressedFx = createEffect(({ snake, key }) => {
+const keyPressedFx = createEffect((param: ({snake: Snake | null, keyboardEvent: KeyboardEvent})) => {
+    const { snake, keyboardEvent } = param
     if (!snake) return
     if (snake.directionBuffer.length > 2) return
-    if ([DirectionEnum.Up, DirectionEnum.Down, DirectionEnum.Left, DirectionEnum.Right].indexOf(key.keyCode) < 0) return
+    if ([DirectionEnum.Up, DirectionEnum.Down, DirectionEnum.Left, DirectionEnum.Right].indexOf(keyboardEvent.keyCode) < 0) return
     const direction = snake.directionBuffer.length
         ? snake.directionBuffer[0]
         : snake.direction
-    if (direction === key.keyCode) return
-    if (Math.abs(direction - key.keyCode) === 2) return
+    if (direction === keyboardEvent.keyCode) return
+    if (Math.abs(direction - keyboardEvent.keyCode) === 2) return
 
-    snake.directionBuffer.push(key.keyCode)
-    return JSON.parse(JSON.stringify(snake))
+    snake.directionBuffer.push(keyboardEvent.keyCode)
+    return new Snake(snake)
 })
-const snakeTickFx = createEffect(snake => {
+const snakeTickFx = createEffect((snake: Snake | null) : Snake | null => {
     if (!snake) {
-        defaultSnake.food = generate(defaultSnake.cells)
-        return JSON.parse(JSON.stringify(defaultSnake))
+        return new Snake()
     }
     const direction = snake.directionBuffer.length
         ? snake.directionBuffer[0]
@@ -105,7 +69,7 @@ const snakeTickFx = createEffect(snake => {
         head.type = CellTypeEnum.Snake
         snake.food.type = CellTypeEnum.Head
         snake.cells.unshift(snake.food)
-        snake.food = generate(snake.cells)
+        snake.food = snake.generateFood()
 
     } else {
 
@@ -126,12 +90,12 @@ const snakeTickFx = createEffect(snake => {
                         cell.y++
                         break;
                 }
-                const tmpCell = snake.cells.find(item => item.y === cell.y && item.x === cell.x && item.key !== cell.key)
+                const tmpCell = snake.cells.find((item: Cell) => item.y === cell.y && item.x === cell.x && item.key !== cell.key)
                 if (cell.y < 0 || cell.y > FIELD_SIZE / CELL_SIZE - 1
                     || cell.x < 0 || cell.x > FIELD_SIZE / CELL_SIZE - 1 || tmpCell) {
                     stopGame()
                     startGameFx()
-                    return
+                    return null
                 }
             } else {
                 cell.x = snake.cells[i - 1].x
@@ -142,18 +106,18 @@ const snakeTickFx = createEffect(snake => {
 
     snake.directionBuffer.shift()
     snake.direction = direction
-    return JSON.parse(JSON.stringify(snake))
+    return new Snake(snake)
 })
 
 sample({
     clock: keyPressed,
     source: $snakeStore,
-    fn: (snake, key) => ({ snake, key }),
+    fn: (snake: Snake | null, keyboardEvent: KeyboardEvent) => ({snake, keyboardEvent}),
     target: keyPressedFx,
 })
 sample({
     clock: startGameFx.doneData,
-    fn: (_, timerId) => timerId,
+    fn: (timerId: number) => timerId,
     target: $timerStore
 })
 sample({
@@ -165,26 +129,3 @@ forward({
     from: snakeTickFx.doneData,
     to: $snakeStore
 })
-
-const randomIntFromInterval = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-const generate = cells => {
-    let x = 0
-    let y = 0
-    let ready = false
-
-    while (!ready) {
-        x = randomIntFromInterval(0, FIELD_SIZE / CELL_SIZE - 1)
-        y = randomIntFromInterval(0, FIELD_SIZE / CELL_SIZE - 1)
-
-        ready = !cells?.find(item => item.x === x && item.y === y)
-    }
-    return {
-        key: Date.now(),
-        x: x,
-        y: y,
-        type: CellTypeEnum.Food
-    }
-}

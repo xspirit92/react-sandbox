@@ -1,7 +1,7 @@
 import React from "react"
 import { Modal } from "antd";
 
-const GameModal = (props) => {
+const GameModal = (props: { isModalVisible: boolean, isUserWin: boolean, okHandler: (e: any) => void }) => {
 
     return (        
         <Modal

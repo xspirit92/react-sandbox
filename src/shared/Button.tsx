@@ -1,6 +1,6 @@
 import React from "react";
 
-const Button = (props) => {
+const Button = (props: {children: any, onClick: (e:any) => void}) => {
   return (
     <div>
       <button {...props} className="form-button">{props.children}</button>
